@@ -2,8 +2,10 @@
 
 #include "godot_cpp/classes/ref_counted.hpp"
 #include "godot_cpp/classes/wrapped.hpp"
+#include "godot_cpp/templates/hashfuncs.hpp"
+#include "godot_cpp/variant/variant.hpp"
 #include "godot_cpp/variant/vector3.hpp"
-#include "hex_map.h"
+#include "planes.h"
 #include <cstdint>
 
 using namespace godot;
@@ -14,6 +16,29 @@ class HexMapIterAxialRef;
 
 class HexMapCellId {
 public:
+	// To use HexMapCellId as a key for HashMap or HashSet
+	union Key {
+		struct {
+			int16_t q, r, y;
+		};
+		uint64_t key;
+
+		Key(const HexMapCellId &cell_id) :
+				q(cell_id.q), r(cell_id.r), y(cell_id.y) {}
+		Key() : key(0){};
+
+		_FORCE_INLINE_ bool operator<(const Key &other) const {
+			return key < other.key;
+		}
+		_FORCE_INLINE_ bool operator==(const Key &other) const {
+			return key == other.key;
+		}
+		_FORCE_INLINE_ operator HexMapCellId() const {
+			return HexMapCellId(q, r, y);
+		}
+		_FORCE_INLINE_ operator uint64_t() const { return key; }
+	};
+
 	// axial coordinates
 	int q, r;
 
@@ -27,6 +52,7 @@ public:
 	// XXX remove this; temporary until we fully switch from Vector3i to
 	// HexMapCellId
 	inline operator Vector3i() const { return Vector3i(q, y, r); }
+	inline operator Variant() const { return Ref<HexMapCellIdRef>(*this); }
 	inline operator Ref<HexMapCellIdRef>() const;
 	operator String() const;
 
@@ -59,7 +85,7 @@ public:
 
 	// get all cells within radius of this cell, along the provided planes
 	HexMapIterAxial get_neighbors(unsigned int radius = 1,
-			const HexMap::Planes &planes = HexMap::Planes::All) const;
+			const HexMapPlanes &planes = HexMapPlanes::All) const;
 
 	// get the pixel center of this cell assuming the cell is a unit cell with
 	// height = 1, radius = 1.  Use HexMap.map_to_local() for center scaled
@@ -68,6 +94,13 @@ public:
 
 	// get a cell id for a point on a unit hex grid (height=1, radius-1)
 	static HexMapCellId from_unit_point(const Vector3 &point);
+
+	// convert to odd-r coordinates
+	// https://www.redblobgames.com/grids/hexagons/#conversions-offset
+	_FORCE_INLINE_ Vector3 to_oddr() const {
+		int x = q + (r - (r & 1)) / 2;
+		return Vector3i(x, y, r);
+	}
 
 	static const HexMapCellId Origin;
 	static const HexMapCellId Invalid;

@@ -1,21 +1,23 @@
-[gd_scene load_steps=5 format=4 uid="uid://bt0soj2wvavie"]
+[gd_scene load_steps=6 format=4 uid="uid://bt0soj2wvavie"]
 
 [ext_resource type="Script" path="res://sandbox.gd" id="1_yje1l"]
 [ext_resource type="PackedScene" uid="uid://wcaukixhlbo2" path="res://RayPickerCamera/ray_picker_camera.tscn" id="2_1one6"]
 [ext_resource type="MeshLibrary" uid="uid://ygm46u2uobsa" path="res://tileset.tres" id="3_qx6ju"]
 
+[sub_resource type="NavigationMesh" id="NavigationMesh_2mako"]
+
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_bq4b2"]
 
 [node name="Sandbox" type="Node3D" node_paths=PackedStringArray("hex_map")]
 script = ExtResource("1_yje1l")
-hex_map = NodePath("HexMap")
+hex_map = NodePath("NavigationRegion3D/HexMap")
 
 [node name="RayPickerCamera" parent="." node_paths=PackedStringArray("hex_map", "marker") instance=ExtResource("2_1one6")]
 transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 26.0113, 10.4268)
 fov = 35.0
-hex_map = NodePath("../HexMap")
+hex_map = NodePath("../NavigationRegion3D/HexMap")
 label_cells = false
-marker = NodePath("../HexMap/Marker")
+marker = NodePath("../NavigationRegion3D/HexMap/Marker")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 66.1477, 0)
@@ -23,8 +25,15 @@ shadow_enabled = true
 
 [node name="GridMap" type="GridMap" parent="."]
 mesh_library = ExtResource("3_qx6ju")
+data = {
+"cells": PackedInt32Array(3, 7, 5, 4, 7, 5, 4, 6, 5, 3, 6, 5, 3, 5, 5, 2, 5, 5, 2, 4, 5, 1, 4, 5, 0, 4, 5, 65535, 4, 5, 65534, 4, 5, 65533, 4, 5, 65533, 3, 5, 65534, 3, 5, 65535, 3, 5, 65534, 65533, 5, 65534, 65534, 5, 65535, 65534, 5, 0, 65534, 5, 1, 65534, 5, 1, 65533, 5, 1, 65532, 5, 0, 65532, 5, 65535, 65532, 5, 65535, 65533, 5, 65533, 65533, 5, 65532, 65533, 5, 65532, 65532, 5, 65533, 65531, 5, 65534, 65531, 5, 65534, 65532, 5, 0, 65533, 5)
+}
+metadata/_editor_floor_ = Vector3(0, 0, 0)
 
-[node name="HexMap" type="HexMap" parent="."]
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_2mako")
+
+[node name="HexMap" type="HexMap" parent="NavigationRegion3D"]
 mesh_library = ExtResource("3_qx6ju")
 cell_size = Vector3(1.154, 1, 1.154)
 cell_center_y = false
@@ -33,6 +42,6 @@ data = {
 }
 metadata/_editor_floors_ = [5, 0, 0, 0]
 
-[node name="Marker" type="MeshInstance3D" parent="HexMap"]
+[node name="Marker" type="MeshInstance3D" parent="NavigationRegion3D/HexMap"]
 mesh = SubResource("CapsuleMesh_bq4b2")
-skeleton = NodePath("../../GridMap")
+skeleton = NodePath("../../../GridMap")

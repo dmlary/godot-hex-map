@@ -1,7 +1,8 @@
 #include "hex_map_iter_axial.h"
 
 HexMapIterAxial::HexMapIterAxial(const HexMapCellId center,
-		unsigned int radius, const HexMap::Planes &planes) :
+		unsigned int radius,
+		const HexMap::Planes &planes) :
 		center(center), radius(radius) {
 	if (!center.in_bounds()) {
 		radius = 0;

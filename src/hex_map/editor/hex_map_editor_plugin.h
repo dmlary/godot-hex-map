@@ -29,6 +29,8 @@
 
 using namespace godot;
 
+// XXX move palette to bottom panel for HexGrid
+
 // input states:
 //	- erase_only; default state
 //		- erase_or_paint: tile selected

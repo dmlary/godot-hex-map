@@ -74,7 +74,7 @@ Cpp11BracedListStyle: false
 # ExperimentalAutoDetectBinPacking: false
 # PackConstructorInitializers: BinPack
 ConstructorInitializerAllOnOneLineOrOnePerLine: true
-# AllowAllConstructorInitializersOnNextLine: true
+AllowAllConstructorInitializersOnNextLine: true
 # FixNamespaceComments: true
 # ForEachMacros:
 #   - foreach
