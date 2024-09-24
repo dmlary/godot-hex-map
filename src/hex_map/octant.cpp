@@ -199,6 +199,7 @@ void HexMapOctant::remove_cell(const CellKey cell_key) {
 }
 
 HexMapOctant::HexMapOctant(HexMap &hex_map) : hex_map(hex_map) {
+	auto prof = profiling_begin("HexMapOctant");
 	PhysicsServer3D *ps = PhysicsServer3D::get_singleton();
 
 	physics_body = ps->body_create();
@@ -210,6 +211,7 @@ HexMapOctant::HexMapOctant(HexMap &hex_map) : hex_map(hex_map) {
 }
 
 HexMapOctant::~HexMapOctant() {
+	auto prof = profiling_begin("~HexMapOctant");
 	PhysicsServer3D *ps = PhysicsServer3D::get_singleton();
 	ps->free_rid(physics_body);
 }

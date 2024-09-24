@@ -2,6 +2,7 @@
 
 #include "godot_cpp/classes/ref_counted.hpp"
 #include "godot_cpp/classes/wrapped.hpp"
+#include "godot_cpp/core/defs.hpp"
 #include "godot_cpp/templates/hashfuncs.hpp"
 #include "godot_cpp/variant/variant.hpp"
 #include "godot_cpp/variant/vector3.hpp"
@@ -40,19 +41,19 @@ public:
 	};
 
 	// axial coordinates
-	int q, r;
+	int32_t q, r;
 
 	// y coordinate
-	int y;
+	int32_t y;
 
 	HexMapCellId() : q(0), r(0), y(0){};
 	HexMapCellId(int q, int r, int y) : q(q), r(r), y(y){};
-	HexMapCellId(Vector3i v) : q(v.x), r(v.z), y(v.y){};
+	_FORCE_INLINE_ HexMapCellId(const Vector3i v) : q(v.x), r(v.z), y(v.y) {};
 
 	// XXX remove this; temporary until we fully switch from Vector3i to
 	// HexMapCellId
 	inline operator Vector3i() const { return Vector3i(q, y, r); }
-	inline operator Variant() const { return Ref<HexMapCellIdRef>(*this); }
+	inline operator Variant() const { return (Vector3i) * this; }
 	inline operator Ref<HexMapCellIdRef>() const;
 	operator String() const;
 

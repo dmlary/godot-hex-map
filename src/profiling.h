@@ -15,9 +15,9 @@ class ProfilingSignpost {
 	os_signpost_id_t signpost;
 
 public:
-	_FORCE_INLINE_ ProfilingSignpost(os_log_t log, os_signpost_id_t signpost) :
+	ProfilingSignpost(os_log_t log, os_signpost_id_t signpost) :
 			log(log), signpost(signpost) {}
-	_FORCE_INLINE_ ~ProfilingSignpost() {
+	~ProfilingSignpost() {
 		os_signpost_interval_end(log, signpost, "interval signpost");
 	}
 };
@@ -33,6 +33,7 @@ public:
 				##__VA_ARGS__);                                               \
 		ProfilingSignpost(profiling_os_log, __signpost_id);                   \
 	})
+
 #define profiling_emit(name, ...)                                             \
 	os_signpost_event_emit(profiling_os_log,                                  \
 			OS_SIGNPOST_ID_EXCLUSIVE + __COUNTER__,                           \

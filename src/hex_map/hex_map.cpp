@@ -371,10 +371,11 @@ void HexMap::set_center_z(bool p_enable) {
 
 bool HexMap::get_center_z() const { return center_z; }
 
-void HexMap::set_cell_item(const HexMapCellId &cell_id,
+void HexMap::set_cell_item_evil(const HexMapCellId &cell_id,
 		int p_item,
 		int p_rot) {
 	ERR_FAIL_COND_MSG(!cell_id.in_bounds(), "cell id is not in bounds");
+	auto prof = profiling_begin("set cell item");
 
 	// if (baked_meshes.size() && !recreating_octants) {
 	// 	// if you set a cell item, baked meshes go good bye
@@ -382,8 +383,6 @@ void HexMap::set_cell_item(const HexMapCellId &cell_id,
 	// 	_recreate_octant_data();
 	// }
 
-	// auto profile = profiling_begin(
-	// 		"set_cell_item(%hd, %hd, %hd)", cell_id.q, cell_id.r, cell_id.y);
 	CellKey cell_key(cell_id);
 	OctantKey octant_key(cell_id, octant_size);
 	Octant **octant_ptr = octants.getptr(octant_key);
@@ -424,6 +423,8 @@ void HexMap::set_cell_item(const HexMapCellId &cell_id,
 		octant->remove_cell(cell_key);
 		_queue_octants_dirty();
 	}
+
+	return;
 
 	// OctantKey octantkey = octant_key;
 	//
@@ -486,11 +487,35 @@ void HexMap::set_cell_item(const HexMapCellId &cell_id,
 	// cell_map[cell_key] = c;
 	// emit_signal("cell_changed", cell_id);
 }
+
 void HexMap::_set_cell_item(const Ref<HexMapCellIdRef> cell_id,
 		int p_item,
 		int p_rot) {
 	ERR_FAIL_COND_MSG(!cell_id.is_valid(), "null cell id");
 	set_cell_item(**cell_id, p_item, p_rot);
+}
+
+void HexMap::_set_cell_item_v(const Vector3i &cell_id, int p_item, int p_rot) {
+	set_cell_item(cell_id, p_item, p_rot);
+}
+
+void HexMap::set_cell_item(const HexMapCellId &cell_id, int a, int b) {}
+
+void HexMap::do_nothing(const HexMapCellId &cell_id, int a, int b) {}
+
+void HexMap::_fill_cells(const Array &cells, int p_item, int p_rot) {
+	int size = cells.size();
+	HexMapCellId v;
+
+	for (int i = 0; i < size; i++) {
+		auto inner = profiling_begin("outer set_cell_item()");
+		set_cell_item(v, p_item, p_rot);
+	}
+
+	for (int i = 0; i < size; i++) {
+		auto inner = profiling_begin("outer do_nothing()");
+		do_nothing(v, p_item, p_rot);
+	}
 }
 
 int HexMap::get_cell_item(const HexMapCellId &cell_id) const {
@@ -1444,6 +1469,14 @@ void HexMap::_bind_methods() {
 	ClassDB::bind_method(
 			D_METHOD("set_cell_item", "position", "item", "orientation"),
 			&HexMap::_set_cell_item,
+			DEFVAL(0));
+	ClassDB::bind_method(
+			D_METHOD("set_cell_item_v", "position", "item", "orientation"),
+			&HexMap::_set_cell_item_v,
+			DEFVAL(0));
+	ClassDB::bind_method(
+			D_METHOD("fill_cells", "cells", "item", "orientation"),
+			&HexMap::_fill_cells,
 			DEFVAL(0));
 	ClassDB::bind_method(
 			D_METHOD("get_cell_item", "position"), &HexMap::_get_cell_item);

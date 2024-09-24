@@ -35,6 +35,7 @@
 #include "godot_cpp/classes/standard_material3d.hpp"
 #include "godot_cpp/core/defs.hpp"
 #include "godot_cpp/templates/hash_map.hpp"
+#include "godot_cpp/variant/vector3i.hpp"
 #include "hex_map/planes.h"
 #include "hex_map/tile_orientation.h"
 #include "hex_map_cell_id.h"
@@ -450,10 +451,15 @@ public:
 	void set_center_z(bool p_enable);
 	bool get_center_z() const;
 
+	void
+	set_cell_item_evil(const HexMapCellId &cell_id, int p_item, int p_rot = 0);
 	void set_cell_item(const HexMapCellId &cell_id, int p_item, int p_rot = 0);
+	void do_nothing(const HexMapCellId &cell_id, int p_item, int p_rot = 0);
 	void _set_cell_item(const Ref<HexMapCellIdRef> cell_id,
 			int p_item,
 			int p_rot = 0);
+	void _set_cell_item_v(const Vector3i &cell_id, int p_item, int p_rot = 0);
+	void _fill_cells(const Array &p_cells, int p_item, int p_rot = 0);
 	int get_cell_item(const HexMapCellId &cell_id) const;
 	int _get_cell_item(const Ref<HexMapCellIdRef> p_cell_id) const;
 	int get_cell_item_orientation(const HexMapCellId &cell_id) const;

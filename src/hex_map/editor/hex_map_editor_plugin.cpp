@@ -1,5 +1,6 @@
+#include "hex_map/hex_map_cell_id.h"
+#include "profiling.h"
 #ifdef TOOLS_ENABLED
-#include "hex_map_editor_plugin.h"
 #include "editor_control.h"
 #include "editor_cursor.h"
 #include "godot_cpp/classes/global_constants.hpp"
@@ -9,6 +10,7 @@
 #include "godot_cpp/variant/callable_method_pointer.hpp"
 #include "godot_cpp/variant/transform3d.hpp"
 #include "godot_cpp/variant/vector3i.hpp"
+#include "hex_map_editor_plugin.h"
 #include "selection_manager.h"
 
 #include <cassert>
@@ -49,7 +51,7 @@ void HexMapEditorPlugin::commit_cell_changes(String desc) {
 	for (const CellChange &change : cells_changed) {
 		undo_redo->add_do_method(hex_map,
 				"set_cell_item",
-				(Vector3i)change.cell_id,
+				change.cell_id,
 				change.new_tile,
 				change.new_orientation);
 	}
@@ -58,7 +60,7 @@ void HexMapEditorPlugin::commit_cell_changes(String desc) {
 		const CellChange &change = *iter;
 		undo_redo->add_undo_method(hex_map,
 				"set_cell_item",
-				(Vector3i)change.cell_id,
+				change.cell_id,
 				change.orig_tile,
 				change.orig_orientation);
 	}
@@ -99,7 +101,7 @@ void HexMapEditorPlugin::selection_clear() {
 	EditorUndoRedoManager *undo_redo = get_undo_redo();
 	undo_redo->create_action("HexMap: clear selected tiles");
 
-	for (const Vector3i cell : selection_manager->get_cells()) {
+	for (const HexMapCellId cell : selection_manager->get_cells()) {
 		undo_redo->add_do_method(
 				hex_map, "set_cell_item", cell, HexMap::INVALID_CELL_ITEM);
 		undo_redo->add_undo_method(hex_map,
@@ -124,17 +126,55 @@ void HexMapEditorPlugin::selection_fill() {
 	EditorUndoRedoManager *undo_redo = get_undo_redo();
 	undo_redo->create_action("HexMap: fill selected tiles");
 
-	for (const Vector3i cell : selection_manager->get_cells()) {
-		undo_redo->add_do_method(
-				hex_map, "set_cell_item", cell, tile.tile, tile.orientation);
+	Array cells;
+	for (const HexMapCellId cell : selection_manager->get_cells()) {
+		cells.push_back((Vector3i)cell);
 		undo_redo->add_undo_method(hex_map,
-				"set_cell_item",
+				"set_cell_item_v",
 				cell,
 				hex_map->get_cell_item(cell),
 				hex_map->get_cell_item_orientation(cell));
 	}
+	undo_redo->add_do_method(
+			hex_map, "fill_cells", cells, tile.tile, tile.orientation);
 
+	auto prof = profiling_begin("commit action");
+	auto start = std::chrono::high_resolution_clock::now();
 	undo_redo->commit_action();
+	auto end = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double> elapsed = end - start;
+	std::cout << "fill cells took " << elapsed.count() << " seconds"
+			  << std::endl;
+
+	const int iters = 10000000;
+	Variant v = Vector3i();
+	start = std::chrono::high_resolution_clock::now();
+	for (int i = 0; i < iters; i++) {
+		Vector3i x = v;
+	}
+	end = std::chrono::high_resolution_clock::now();
+	elapsed = end - start;
+	std::cout << "Variant -> Vector3i took " << elapsed.count() << " seconds"
+			  << std::endl;
+
+	Vector3i x = v;
+	start = std::chrono::high_resolution_clock::now();
+	for (int i = 0; i < iters; i++) {
+		HexMapCellId c = x;
+	}
+	end = std::chrono::high_resolution_clock::now();
+	elapsed = end - start;
+	std::cout << "Vector -> HexMapCellId took " << elapsed.count()
+			  << " seconds" << std::endl;
+
+	start = std::chrono::high_resolution_clock::now();
+	for (int i = 0; i < iters; i++) {
+		HexMapCellId c = (Vector3i)v;
+	}
+	end = std::chrono::high_resolution_clock::now();
+	elapsed = end - start;
+	std::cout << "Variant -> Variant -> HexMapCellId took " << elapsed.count()
+			  << " seconds" << std::endl;
 }
 
 void HexMapEditorPlugin::copy_selection_to_cursor() {
@@ -201,12 +241,12 @@ void HexMapEditorPlugin::selection_clone_apply() {
 				this, "select_cell", (Vector3i)cell.cell_id_live);
 		undo_redo->add_do_method(hex_map,
 				"set_cell_item",
-				(Vector3i)cell.cell_id_live,
+				cell.cell_id_live,
 				cell.tile,
 				cell.orientation);
 		undo_redo->add_undo_method(hex_map,
 				"set_cell_item",
-				(Vector3i)cell.cell_id_live,
+				cell.cell_id_live,
 				hex_map->get_cell_item(cell.cell_id_live),
 				hex_map->get_cell_item_orientation(cell.cell_id_live));
 	}
@@ -279,22 +319,21 @@ void HexMapEditorPlugin::selection_move_apply() {
 	for (const CellChange &change : cells_changed) {
 		undo_redo->add_do_method(hex_map,
 				"set_cell_item",
-				(Vector3i)change.cell_id,
+				change.cell_id,
 				HexMap::INVALID_CELL_ITEM);
 	}
 
 	// set the new cells, and start the undo restoring the new cells
 	for (const auto &cell : editor_cursor->get_tiles()) {
-		undo_redo->add_do_method(
-				this, "select_cell", (Vector3i)cell.cell_id_live);
+		undo_redo->add_do_method(this, "select_cell", cell.cell_id_live);
 		undo_redo->add_do_method(hex_map,
 				"set_cell_item",
-				(Vector3i)cell.cell_id_live,
+				cell.cell_id_live,
 				cell.tile,
 				cell.orientation);
 		undo_redo->add_undo_method(hex_map,
 				"set_cell_item",
-				(Vector3i)cell.cell_id_live,
+				cell.cell_id_live,
 				hex_map->get_cell_item(cell.cell_id_live),
 				hex_map->get_cell_item_orientation(cell.cell_id_live));
 	}
@@ -303,7 +342,7 @@ void HexMapEditorPlugin::selection_move_apply() {
 	for (const CellChange &change : cells_changed) {
 		undo_redo->add_undo_method(hex_map,
 				"set_cell_item",
-				(Vector3i)change.cell_id,
+				change.cell_id,
 				change.orig_tile,
 				change.orig_orientation);
 	}
