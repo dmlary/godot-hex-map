@@ -1,0 +1,31 @@
+name: Lint
+
+on:
+  # Trigger the workflow on push or pull request,
+  # but only for the main branch
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  checks: write
+
+jobs:
+  run-linters:
+    name: Run linters
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+
+      - name: Install ClangFormat
+        run: sudo apt-get install -y clang-format-18
+
+      - name: Run linters
+        uses: wearerequired/lint-action@v2
+        with:
+          clang_format: true

@@ -59,7 +59,7 @@ public:
         };
         uint64_t key = 0;
 
-        Key(){};
+        Key() {};
 
         _FORCE_INLINE_ Key(const HexMapCellId &cell_id, int octant_size) {
             Vector3i oddr = cell_id.to_oddr() / octant_size;
