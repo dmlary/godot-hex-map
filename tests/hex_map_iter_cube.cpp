@@ -170,7 +170,7 @@ TEST_CASE("HexMapIterCube") {
 					CellId(-2,1,1),
 					CellId(2,-1,1),
 
-					// hex y = -1 
+					// hex y = -1
 					CellId(1,0,-1),
 					CellId(-1,0,-1),
 					CellId(0,1,-1),

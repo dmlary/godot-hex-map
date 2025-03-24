@@ -133,4 +133,3 @@ func _input(event: InputEvent) -> void:
 		var pos = hex_map.map_to_local(cursor_cell)
 		pos.y += 1.5
 		marker.position = pos
-		

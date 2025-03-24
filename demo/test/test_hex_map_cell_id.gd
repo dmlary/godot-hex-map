@@ -75,5 +75,3 @@ var get_neighbors_params = ParameterFactory.named_parameters(
 
 func test_get_neighbors(params=use_parameters(get_neighbors_params)):
 	assert_cells_eq(params.center.get_neighbors(), params.neighbors)
-
-

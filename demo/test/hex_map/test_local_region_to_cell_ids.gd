@@ -51,4 +51,3 @@ func test_local_region_to_cell_ids(params=use_parameters(region_params)):
 	var iter = hex_map.local_region_to_cell_ids(params.a, params.b)
 	assert_cells_eq(iter, params.cells)
 	pass
-
