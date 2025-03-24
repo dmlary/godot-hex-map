@@ -12,6 +12,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+
+  # run the pre-commit hooks and commit any changes
   lint:
     name: pre-commit hooks
     runs-on: ubuntu-latest
@@ -21,6 +23,7 @@ jobs:
       - uses: pre-commit-ci/lite-action@v1.1.0
         if: always()
 
+  # build the GDExtension
   build:
     name: build GDExtension
     needs: lint
@@ -41,7 +44,9 @@ jobs:
             { platform: web, arch: wasm32, os: ubuntu-22.04 }
           ]
         target-type: [editor, template_debug, template_release]
-        float-precision: [single, double]
+        # disabling double precision builds for now; doubles the CI time for
+        # unlikely case.
+        float-precision: [single] # , double]
 
     runs-on: ${{ matrix.target.os }}
     steps:
@@ -86,7 +91,9 @@ jobs:
             arch=${{ matrix.target.arch }} \
             precision=${{ matrix.float-precision }}
 
-      - name: Run tests
+      # TODO: run gdscript tests also, see
+      # https://github.com/godotengine/godot-cpp/blob/f08e781b0ba3e45264d7d40e5d6debaa0d838383/.github/workflows/ci.yml#L142-L178
+      - name: Run doctests
         if: matrix.target.run_tests
         run: |
           scons \
@@ -128,14 +135,13 @@ jobs:
           path: |
             ${{ github.workspace }}/bin/**
 
-  # Run the doctests tests
-  # TODO: run gdscript tests also, see https://github.com/godotengine/godot-cpp/blob/f08e781b0ba3e45264d7d40e5d6debaa0d838383/.github/workflows/ci.yml#L142-L178
 
   # Merges all the build artifacts together into a single godot-cpp-template artifact.
   # If you comment out this step, all the builds will be uploaded individually.
   merge:
-    runs-on: ubuntu-22.04
+    name: merge build artifacts
     needs: build
+    runs-on: ubuntu-22.04
     steps:
       - name: Merge Artifacts
         uses: actions/upload-artifact/merge@v4
