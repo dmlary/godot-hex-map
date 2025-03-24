@@ -18,7 +18,8 @@ bool hex_bind::HexMapIter::_iter_init(Variant _arg) {
     return iter->_iter_init();
 }
 
-bool hex_bind::HexMapIter::_iter_next(Variant _arg) {
+bool
+hex_bind::HexMapIter::_iter_next(Variant _arg) {
     return iter->_iter_next();
 }
 

@@ -1,15 +1,29 @@
-name: Build GDExtension
+name: CI
 on:
-  workflow_call:
   pull_request:
-  merge_group:
+    branches:
+      - main
+  push:
+    branches:
+      - main
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
 jobs:
+  lint:
+    name: pre-commit hooks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pre-commit/action@v3.0.1
+      - uses: pre-commit-ci/lite-action@v1.1.0
+        if: always()
+
   build:
+    name: build GDExtension
+    needs: lint
     strategy:
       fail-fast: false
       matrix:
