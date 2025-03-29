@@ -4,6 +4,7 @@ extension_api.json
 .sconsign.dblite
 *.os
 *.o
+.scons-cache
 .DS_Store
 .nobackup*
 .scons_cache

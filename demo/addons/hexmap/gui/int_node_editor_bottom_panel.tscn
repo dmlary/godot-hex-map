@@ -1,0 +1,166 @@
+[gd_scene load_steps=16 format=3 uid="uid://bigls27b0vip1"]
+
+[ext_resource type="Texture2D" uid="uid://dew2xbw2uvpy2" path="res://addons/hexmap/icons/Paint.svg" id="1_62m1a"]
+[ext_resource type="Script" path="res://addons/hexmap/gui/int_node_editor_bottom_panel.gd" id="1_h3koj"]
+[ext_resource type="Texture2D" uid="uid://b6oomxj77xtlg" path="res://addons/hexmap/icons/Eraser.svg" id="2_fniuu"]
+[ext_resource type="Texture2D" uid="uid://db3esx21o6mn1" path="res://addons/hexmap/icons/ToolSelect.svg" id="3_1wtne"]
+[ext_resource type="Texture2D" uid="uid://dxcds4yxeot0t" path="res://addons/hexmap/icons/ActionCopy.svg" id="4_gknl6"]
+[ext_resource type="Texture2D" uid="uid://mx45khfrx1g6" path="res://addons/hexmap/icons/ToolMove.svg" id="5_hqmqe"]
+[ext_resource type="Texture2D" uid="uid://hlskhr8entje" path="res://addons/hexmap/icons/RotateLeft.svg" id="6_06kxs"]
+[ext_resource type="Texture2D" uid="uid://dwstkvj1mrmt3" path="res://addons/hexmap/icons/RotateRight.svg" id="7_2aq7k"]
+[ext_resource type="Texture2D" uid="uid://vrx8uwcvnqhs" path="res://addons/hexmap/icons/Search.svg" id="8_w81nb"]
+[ext_resource type="Texture2D" uid="uid://dbrg57lmmg1vq" path="res://addons/hexmap/icons/FileThumbnail.svg" id="9_dwaqi"]
+[ext_resource type="Texture2D" uid="uid://douar0i3bcce3" path="res://addons/hexmap/icons/FileList.svg" id="10_dw6ox"]
+[ext_resource type="PackedScene" uid="uid://7do5qk8fxmuy" path="res://addons/hexmap/gui/zoom_widget.tscn" id="11_6xxn2"]
+[ext_resource type="PackedScene" uid="uid://bxi5mdivmmoos" path="res://addons/hexmap/gui/int_node_type_selector.tscn" id="12_ijmfj"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_hms7k"]
+device = -1
+keycode = 88
+unicode = 120
+
+[sub_resource type="Shortcut" id="Shortcut_t1ur3"]
+events = [SubResource("InputEventKey_hms7k")]
+
+[node name="IntNodeEditorBottomPanel" type="VBoxContainer"]
+offset_right = 901.0
+offset_bottom = 535.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_h3koj")
+
+[node name="ToolbarHBox" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="ToolbarHBox"]
+layout_mode = 2
+
+[node name="PaintButton" type="Button" parent="ToolbarHBox/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+toggle_mode = true
+icon = ExtResource("1_62m1a")
+flat = true
+
+[node name="EraseButton" type="Button" parent="ToolbarHBox/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+toggle_mode = true
+icon = ExtResource("2_fniuu")
+flat = true
+
+[node name="SelectButton" type="Button" parent="ToolbarHBox/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+toggle_mode = true
+icon = ExtResource("3_1wtne")
+flat = true
+
+[node name="VSeparator" type="VSeparator" parent="ToolbarHBox/HBoxContainer3"]
+layout_mode = 2
+
+[node name="CopyButton" type="Button" parent="ToolbarHBox/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+icon = ExtResource("4_gknl6")
+flat = true
+
+[node name="MoveButton" type="Button" parent="ToolbarHBox/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+icon = ExtResource("5_hqmqe")
+flat = true
+
+[node name="VSeparator2" type="VSeparator" parent="ToolbarHBox/HBoxContainer3"]
+layout_mode = 2
+
+[node name="CCWButton" type="Button" parent="ToolbarHBox/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+icon = ExtResource("6_06kxs")
+flat = true
+
+[node name="CWButton" type="Button" parent="ToolbarHBox/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+icon = ExtResource("7_2aq7k")
+flat = true
+
+[node name="VSeparator3" type="VSeparator" parent="ToolbarHBox/HBoxContainer3"]
+layout_mode = 2
+
+[node name="OptionButton" type="OptionButton" parent="ToolbarHBox/HBoxContainer3"]
+layout_mode = 2
+item_count = 1
+popup/item_0/text = "Y-Axis"
+popup/item_0/id = 0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="ToolbarHBox"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="VSeparator3" type="VSeparator" parent="ToolbarHBox/HBoxContainer2"]
+layout_mode = 2
+
+[node name="FloorLabel" type="Label" parent="ToolbarHBox/HBoxContainer2"]
+layout_mode = 2
+text = "Floor"
+
+[node name="FloorSpinBox" type="SpinBox" parent="ToolbarHBox/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = -32768.0
+max_value = 32767.0
+
+[node name="VSeparator2" type="VSeparator" parent="ToolbarHBox/HBoxContainer2"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ToolbarHBox"]
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_constants/separation = 10
+
+[node name="FilterLineEdit" type="LineEdit" parent="ToolbarHBox/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+placeholder_text = "Filter Meshes"
+clear_button_enabled = true
+right_icon = ExtResource("8_w81nb")
+
+[node name="ThumbnailButton" type="Button" parent="ToolbarHBox/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+toggle_mode = true
+button_pressed = true
+shortcut = SubResource("Shortcut_t1ur3")
+icon = ExtResource("9_dwaqi")
+flat = true
+
+[node name="ListButton" type="Button" parent="ToolbarHBox/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+toggle_mode = true
+icon = ExtResource("10_dw6ox")
+flat = true
+
+[node name="ZoomWidget" parent="ToolbarHBox/HBoxContainer" instance=ExtResource("11_6xxn2")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 1
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TypeSelector" parent="HBoxContainer/VBoxContainer" instance=ExtResource("12_ijmfj")]
+unique_name_in_owner = true
+layout_mode = 2

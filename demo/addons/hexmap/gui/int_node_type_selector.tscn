@@ -1,0 +1,55 @@
+[gd_scene load_steps=5 format=3 uid="uid://bxi5mdivmmoos"]
+
+[ext_resource type="Script" path="res://addons/hexmap/gui/int_node_type_selector.gd" id="1_ykviw"]
+[ext_resource type="Texture2D" uid="uid://27nqiq38njor" path="res://addons/hexmap/icons/Add.svg" id="2_ukl2n"]
+[ext_resource type="Theme" uid="uid://hmpeb1yvo8yj" path="res://addons/hexmap/hex_map_theme.tres" id="3_mvouq"]
+[ext_resource type="PackedScene" uid="uid://domdgn3qbay7r" path="res://addons/hexmap/gui/int_node_cell_type_button.tscn" id="4_sgs0c"]
+
+[node name="IntNodeTypeSelector" type="VBoxContainer"]
+custom_minimum_size = Vector2(0, 200)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_ykviw")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="."]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("3_mvouq")
+
+[node name="PanelContainer" type="PanelContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme = ExtResource("3_mvouq")
+theme_type_variation = &"panel_highlight"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="CellTypes" type="VBoxContainer" parent="ScrollContainer/PanelContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="IntNodeCellTypeButton" parent="ScrollContainer/PanelContainer/VBoxContainer/CellTypes" instance=ExtResource("4_sgs0c")]
+layout_mode = 2
+
+[node name="AddTypeFormButton" type="Button" parent="ScrollContainer/PanelContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "New Type"
+icon = ExtResource("2_ukl2n")
+
+[node name="ContextMenu" type="PopupMenu" parent="."]
+unique_name_in_owner = true
+item_count = 2
+item_0/text = "Edit"
+item_0/id = 0
+item_1/text = "Delete"
+item_1/id = 1

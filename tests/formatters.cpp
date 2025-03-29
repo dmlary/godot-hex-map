@@ -1,6 +1,6 @@
 #include "formatters.h"
-#include "hex_map/iter_axial.h"
-#include "hex_map/iter_radial.h"
+#include "core/iter_axial.h"
+#include "core/iter_radial.h"
 #include <ostream>
 
 namespace godot {

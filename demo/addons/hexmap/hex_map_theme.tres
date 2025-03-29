@@ -1,0 +1,39 @@
+[gd_resource type="Theme" load_steps=5 format=3 uid="uid://hmpeb1yvo8yj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pkn6l"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.227451, 0.321569, 0.415686, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7qjei"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.168627, 0.219608, 0.266667, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6nt0i"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1701, 0.221715, 0.27, 0)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_46ql0"]
+bg_color = Color(0.14902, 0.168627, 0.2, 1)
+
+[resource]
+PanelContainer/styles/focus = SubResource("StyleBoxFlat_pkn6l")
+PanelContainer/styles/hovered = SubResource("StyleBoxFlat_7qjei")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_6nt0i")
+ScrollContainer/styles/panel = SubResource("StyleBoxFlat_46ql0")

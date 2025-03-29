@@ -1,14 +1,15 @@
+#include "core/cell_id.h"
+#include "core/iter_cube.h"
+#include "core/math.h"
 #include "doctest.h"
 #include "formatters.h"
 #include "godot_cpp/variant/vector3.hpp"
-#include "hex_map/hex_map.h"
-#include "hex_map/iter_cube.h"
 #include <sys/signal.h>
 #include <algorithm>
 #include <climits>
 #include <csignal>
 
-using CellId = HexMap::CellId;
+using CellId = HexMapCellId;
 
 TEST_CASE("HexMapIterCube") {
     struct TestCase {

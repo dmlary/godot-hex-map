@@ -1,15 +1,14 @@
+#include "core/cell_id.h"
+#include "core/iter_axial.h"
+#include "core/planes.h"
 #include "doctest.h"
 #include "formatters.h"
-#include "hex_map/cell_id.h"
-#include "hex_map/hex_map.h"
-#include "hex_map/iter_axial.h"
-#include "hex_map/planes.h"
 #include <sys/signal.h>
 #include <algorithm>
 #include <climits>
 #include <csignal>
 
-using CellId = HexMap::CellId;
+using CellId = HexMapCellId;
 
 TEST_CASE("HexMapIterAxial") {
     struct TestCase {

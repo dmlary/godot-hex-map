@@ -1,6 +1,6 @@
 extends Camera3D
 
-@export var hex_map: HexMap
+@export var hex_map: HexMapTiled
 @export var label_cells := true
 @export var marker: Node3D
 
@@ -56,7 +56,7 @@ func _process(_delta: float) -> void:
 		return
 
 	var collider = raycast.get_collider()
-	if collider is not HexMap:
+	if collider is not HexMapNode:
 		return
 
 	var collison_point = raycast.get_collision_point()

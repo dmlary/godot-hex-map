@@ -1,7 +1,7 @@
 @tool
 extends Node3D
 
-@export var hex_map: HexMap
+@export var hex_map: HexMapTiled
 
 # OperatorEvaluatorEqualObject::evaluate()
 #	*
@@ -29,6 +29,23 @@ func draw_line(pos1: Vector3, pos2: Vector3) -> MeshInstance3D:
 
 
 func _ready():
+	var global := Transform3D(Basis(Vector3(0, 1, 0), PI/2)) # 90 degrees
+	var local := Transform3D(Basis(), Vector3(10, 0, 0)) # x += 10
+	var cell := Transform3D(Basis(), Vector3(0, 0, 5)) # z += 5
+	var mesh := Transform3D(Basis(), Vector3(0, 1, 0)) # y += 1
+
+	print("global ", global)
+	print("local ", local)
+	print("cell ", cell)
+	print("mesh ", mesh)
+
+	print("g * l * c * m = ", global * local * cell * mesh)
+	var t := cell * mesh
+	print("g * l * (c * m) = ", global * local * t)
+	var d := global * local * cell * mesh
+	print("global.inverse() * d = ", global.inverse() * d)
+	print("local.inverse() * global.inverse() * d = ", local.inverse() * global.inverse() * d)
+
 
 	# print("HexMap baked meshes ", hex_map.get_bake_meshes())
 	pass

@@ -1,8 +1,33 @@
-[gd_scene load_steps=4 format=3 uid="uid://7do5qk8fxmuy"]
+[gd_scene load_steps=10 format=3 uid="uid://7do5qk8fxmuy"]
 
-[ext_resource type="Texture2D" uid="uid://dnmv5o1lwlm6u" path="res://addons/hexmap/icons/ZoomLess.svg" id="1_8geid"]
+[ext_resource type="Texture2D" uid="uid://dil7etyedvh0w" path="res://addons/hexmap/icons/ZoomLess.svg" id="1_8geid"]
 [ext_resource type="Script" path="res://addons/hexmap/gui/zoom_widget.gd" id="1_ynrx2"]
-[ext_resource type="Texture2D" uid="uid://baxlxhhdf40su" path="res://addons/hexmap/icons/ZoomMore.svg" id="2_vq7es"]
+[ext_resource type="Texture2D" uid="uid://bau2qlx8yr234" path="res://addons/hexmap/icons/ZoomMore.svg" id="2_vq7es"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_46gjm"]
+device = -1
+keycode = 45
+unicode = 45
+
+[sub_resource type="Shortcut" id="Shortcut_ngrb1"]
+events = [SubResource("InputEventKey_46gjm")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_m6gg7"]
+device = -1
+keycode = 48
+unicode = 48
+
+[sub_resource type="Shortcut" id="Shortcut_b05ju"]
+events = [SubResource("InputEventKey_m6gg7")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_a6gna"]
+device = -1
+shift_pressed = true
+keycode = 61
+unicode = 43
+
+[sub_resource type="Shortcut" id="Shortcut_goy1g"]
+events = [SubResource("InputEventKey_a6gna")]
 
 [node name="ZoomWidget" type="HBoxContainer"]
 size_flags_horizontal = 6
@@ -12,13 +37,16 @@ script = ExtResource("1_ynrx2")
 [node name="ZoomOutButton" type="Button" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
+shortcut = SubResource("Shortcut_ngrb1")
 icon = ExtResource("1_8geid")
 flat = true
 
 [node name="ZoomLabel" type="Button" parent="."]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 size_flags_horizontal = 4
+shortcut = SubResource("Shortcut_b05ju")
 text = "100.0%"
 flat = true
 alignment = 2
@@ -26,5 +54,6 @@ alignment = 2
 [node name="ZoomInButton" type="Button" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
+shortcut = SubResource("Shortcut_goy1g")
 icon = ExtResource("2_vq7es")
 flat = true

@@ -17,8 +17,12 @@ if env.get("is_msvc", False):
 env.Append(CPPPATH=["src/"])
 sources = [
     Glob("src/*.cpp"),
-    Glob("src/hex_map/*.cpp"),
-    Glob("src/hex_map/editor/*.cpp"),
+    Glob("src/core/*.cpp"),
+    Glob("src/core/editor/*.cpp"),
+    Glob("src/tiled_node/*.cpp"),
+    Glob("src/tiled_node/editor/*.cpp"),
+    Glob("src/int_node/*.cpp"),
+    Glob("src/int_node/editor/*.cpp"),
 ]
 
 if env["platform"] == "macos":
@@ -51,9 +55,8 @@ Default(library)
 # but instead of erroring, it redirects those to an __abort_with_payload() call.
 # So the binary links, you execut it and it crashes.
 #
-# This shitty workaround, just recompile the sources and link them directly into
-# the test binary.
-
+# This is a crappy workaround, just recompile the sources and link them
+# directly into the test binary.
 godot_cpp = File(f"godot-cpp/bin/libgodot-cpp{env['suffix']}.a")
 tests = env.Program(
     target='tests/tests',

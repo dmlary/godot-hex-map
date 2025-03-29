@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3 uid="uid://domdgn3qbay7r"]
+
+[ext_resource type="Theme" uid="uid://hmpeb1yvo8yj" path="res://addons/hexmap/hex_map_theme.tres" id="1_opi8h"]
+[ext_resource type="Script" path="res://addons/hexmap/gui/int_node_cell_type_button.gd" id="2_cpny0"]
+
+[node name="IntNodeCellTypeButton" type="PanelContainer"]
+custom_minimum_size = Vector2(512, 0)
+offset_right = 350.0
+offset_bottom = 169.0
+pivot_offset = Vector2(7032, 3405)
+theme = ExtResource("1_opi8h")
+script = ExtResource("2_cpny0")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="Color" type="ColorRect" parent="HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+mouse_filter = 1
+color = Color(1, 0.618496, 0.737685, 1)
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Lava"
+
+[node name="ValueLabel" type="Label" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_colors/font_color = Color(0.499439, 0.49944, 0.499439, 1)

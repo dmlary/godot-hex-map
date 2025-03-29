@@ -1,5 +1,5 @@
+#include "core/cell_id.h"
 #include "doctest.h"
-#include "hex_map/cell_id.h"
 
 TEST_CASE("HexMapCellId::operator+()") {
     CHECK(HexMapCellId(0, 0, 0) + HexMapCellId(1, 2, 3) ==
