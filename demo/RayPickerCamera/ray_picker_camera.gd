@@ -49,23 +49,30 @@ func _ready() -> void:
 
     # label all of the cells
     if label_cells == true:
+        var max_neighbour_search_height = 5
+        var label_string = "q:{q}, r:{r}, y:{y}"
+
         for cell_vec in hex_map.get_cell_vecs():
             var cell := HexMapCellId.from_vec(cell_vec)
-
+            var is_top_cell = true
+            var current_search_height = 0
             var above = cell
-            above.y += 1
-            if hex_map.get_cell_item(above) != -1:
+            while is_top_cell && current_search_height <= max_neighbour_search_height:
+                above = above.up()
+                is_top_cell = !hex_map.has(above)
+                current_search_height += 1
+
+            if !is_top_cell:
                 continue
 
-            var coords = hex_map.cell_id_to_local(cell);
+            var coords_above = hex_map.get_cell_center(cell.up());
             var clabel := Label3D.new();
             clabel.no_depth_test = true
-            clabel.text = str(cell)
-            coords.y += 0.5
-            clabel.position = coords
+            clabel.text = label_string.format({ "q": cell.q, "r": cell.r, "y": cell.y })
+            clabel.position = coords_above
             clabel.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-            clabel.font_size = 64
-            clabel.outline_size = 0
+            clabel.font_size = 48
+            clabel.outline_size = 3
             clabel.modulate = Color.BLACK
             get_parent().add_child.call_deferred(clabel)
 

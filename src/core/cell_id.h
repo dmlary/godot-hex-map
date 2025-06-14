@@ -119,7 +119,7 @@ public:
             bool include_center = false) const;
 
     // get the pixel center of this cell assuming the cell is a unit cell with
-    // height = 1, radius = 1.  Use HexMap.map_to_local() for center scaled
+    // height = 1, radius = 1.  Use HexMap.get_cell_center() for center scaled
     // by cell size.
     Vector3 unit_center() const;
 
