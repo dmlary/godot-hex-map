@@ -55,6 +55,10 @@
 
 using EditAxis = EditorCursor::EditAxis;
 
+void HexMapNodeEditorPlugin::set_buildup_brush(bool toggled) {
+    buildup_mode = toggled;
+}
+
 void HexMapNodeEditorPlugin::commit_cell_changes(String desc) {
     auto change_count = cells_changed.size();
     Array do_list, undo_list;
@@ -378,7 +382,11 @@ int32_t HexMapNodeEditorPlugin::_forward_3d_gui_input(Camera3D *p_camera,
     // generate during NOTIFICATION_APPLICATION_FOCUS_OUT
     Ref<InputEventMouse> mouse_event = p_event;
     if (mouse_event.is_valid() && p_camera != nullptr) {
-        editor_cursor->update(p_camera, mouse_event->get_position(), nullptr);
+        if (buildup_mode) {
+            editor_cursor->update(p_camera, mouse_event->get_position(), hex_map, nullptr);
+        } else {
+            editor_cursor->update(p_camera, mouse_event->get_position(), nullptr);
+        }
     }
 
     // grab the common mouse button up/downs to simplify the conditions in the
@@ -1047,6 +1055,9 @@ void HexMapNodeEditorPlugin::_bind_methods() {
     ClassDB::bind_method(D_METHOD("cursor_set_orientation", "orientation"),
             static_cast<void (HexMapNodeEditorPlugin::*)(int)>(
                     &HexMapNodeEditorPlugin::cursor_set_orientation));
+
+    ClassDB::bind_method(D_METHOD("set_buildup_brush", "toggled"), 
+            &HexMapNodeEditorPlugin::set_buildup_brush);
 }
 
 void HexMapNodeEditorPlugin::add_editor_shortcut(const String &path,
@@ -1090,6 +1101,8 @@ void HexMapNodeEditorPlugin::add_editor_shortcut(const String &path,
 }
 
 HexMapNodeEditorPlugin::HexMapNodeEditorPlugin() {
+    buildup_mode = false;
+
     // initialize the depth array
     edit_axis_depth.resize(4);
     edit_axis_depth.fill(0);
