@@ -51,7 +51,10 @@ public:
     /// querying the hex_map
     ///
     /// Function will return `true` when the cursor moves to a different cell
-    bool update(const Camera3D *camera, const Point2 &pointer, const HexMapNode *hex_map, Vector3 *point);
+    bool update(const Camera3D *camera,
+            const Point2 &pointer,
+            const HexMapNode *hex_map,
+            Vector3 *point);
 
     /// update the cursor based on the camera and pointer positition
     ///

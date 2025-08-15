@@ -383,9 +383,11 @@ int32_t HexMapNodeEditorPlugin::_forward_3d_gui_input(Camera3D *p_camera,
     Ref<InputEventMouse> mouse_event = p_event;
     if (mouse_event.is_valid() && p_camera != nullptr) {
         if (buildup_mode) {
-            editor_cursor->update(p_camera, mouse_event->get_position(), hex_map, nullptr);
+            editor_cursor->update(
+                    p_camera, mouse_event->get_position(), hex_map, nullptr);
         } else {
-            editor_cursor->update(p_camera, mouse_event->get_position(), nullptr);
+            editor_cursor->update(
+                    p_camera, mouse_event->get_position(), nullptr);
         }
     }
 
@@ -1056,7 +1058,7 @@ void HexMapNodeEditorPlugin::_bind_methods() {
             static_cast<void (HexMapNodeEditorPlugin::*)(int)>(
                     &HexMapNodeEditorPlugin::cursor_set_orientation));
 
-    ClassDB::bind_method(D_METHOD("set_buildup_brush", "toggled"), 
+    ClassDB::bind_method(D_METHOD("set_buildup_brush", "toggled"),
             &HexMapNodeEditorPlugin::set_buildup_brush);
 }
 
