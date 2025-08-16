@@ -467,9 +467,9 @@ int32_t HexMapNodeEditorPlugin::_forward_3d_gui_input(Camera3D *p_camera,
                 AFTER_GUI_INPUT_STOP);
 
         Array last_cell_update = Array::make();
-        if ((!cells_changed.is_empty() &&
-                    (--cells_changed.end())->cell_id != cell_id) ||
-                mouse_left_released) {
+        if (!cells_changed.is_empty() &&
+                ((--cells_changed.end())->cell_id != cell_id ||
+                        mouse_left_released)) {
             auto last_cell_change = (--cells_changed.end());
             last_cell_update.append((Vector3i)last_cell_change->cell_id);
             last_cell_update.append(last_cell_change->new_tile);
