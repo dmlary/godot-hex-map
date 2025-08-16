@@ -5,6 +5,8 @@
 #include <godot_cpp/classes/editor_interface.hpp>
 #include <godot_cpp/classes/editor_plugin.hpp>
 #include <godot_cpp/classes/mesh_library.hpp>
+#include <godot_cpp/classes/physics_direct_space_state3d.hpp>
+#include <godot_cpp/classes/physics_ray_query_parameters3d.hpp>
 #include <godot_cpp/classes/rendering_server.hpp>
 #include <godot_cpp/classes/scene_tree.hpp>
 #include <godot_cpp/classes/sub_viewport.hpp>
@@ -86,7 +88,7 @@ void EditorCursor::transform_meshes() {
     }
 
     // To prevent the HexMapNode cells from hiding the cursor cells (by having
-    // larger meshes, etc), we need to get a the list of cells the editor
+    // larger meshes, etc), we need to get a the list of cells the
     // cursor now overlaps, and hide those.  Additionally we need to show any
     // cells we no longer overlap.
     //
@@ -203,6 +205,68 @@ HexMapNode::CellInfo EditorCursor::get_origin_cell_info() const {
         .value = cell->index,
         .orientation = cell->orientation + orientation,
     };
+}
+
+bool EditorCursor::update(const Camera3D *camera,
+        const Point2 &pointer,
+        const HexMapNode *hex_map,
+        Vector3 *point) {
+    ERR_FAIL_COND_V_MSG(
+            camera == nullptr, false, "null camera in EditorCursor.update()");
+    ERR_FAIL_COND_V_MSG(hex_map == nullptr,
+            false,
+            "null hex_map in EditorCursor.update()");
+
+    Transform3D local_transform =
+            parent_space.get_transform().affine_inverse();
+    Vector3 origin = camera->project_ray_origin(pointer);
+    Vector3 normal = camera->project_ray_normal(pointer);
+    origin = local_transform.xform(origin);
+    normal = local_transform.basis.xform(normal).normalized();
+
+    Vector3 pos;
+    if (!edit_plane.intersects_ray(origin, normal, &pos)) {
+        return false;
+    }
+    last_update_origin = origin;
+    last_update_normal = normal;
+
+    auto space = hex_map->get_world_3d()->get_direct_space_state();
+    auto raycast = space->intersect_ray(PhysicsRayQueryParameters3D::create(
+            camera->project_ray_origin(pointer), pos, 1, {}));
+    if (!raycast.is_empty()) {
+        auto position = raycast.get("position", 0);
+        if (position.get_type() == Variant::Type::VECTOR3) {
+            pos = position;
+        }
+    }
+    if (point != nullptr) {
+        *point = pos;
+    }
+    pointer_pos = pos;
+
+    HexMapCellId cell = parent_space.get_cell_id(pos);
+    if (hex_map->get_cell(cell).value != HexMapNode::CELL_VALUE_NONE) {
+        // currently if cell is occupied we will just query along the
+        // work axis until its unoccupied, but another valid choice is to
+        // step towards nearest cell in direction of camera
+
+        // naively step "upwards" along work axis, does not account for if
+        // camera is below work plane
+        cell = cell + HexMapCellId(edit_plane.normal);
+    }
+    if (hex_map->get_cell(cell).value != HexMapNode::CELL_VALUE_NONE) {
+        return false;
+    }
+
+    if (cell == pointer_cell) {
+        return false;
+    }
+    pointer_cell = cell;
+
+    transform_meshes();
+
+    return true;
 }
 
 bool EditorCursor::update(const Camera3D *camera,

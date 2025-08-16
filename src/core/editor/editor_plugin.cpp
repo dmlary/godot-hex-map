@@ -55,6 +55,10 @@
 
 using EditAxis = EditorCursor::EditAxis;
 
+void HexMapNodeEditorPlugin::set_buildup_brush(bool toggled) {
+    buildup_mode = toggled;
+}
+
 void HexMapNodeEditorPlugin::commit_cell_changes(String desc) {
     auto change_count = cells_changed.size();
     Array do_list, undo_list;
@@ -378,7 +382,13 @@ int32_t HexMapNodeEditorPlugin::_forward_3d_gui_input(Camera3D *p_camera,
     // generate during NOTIFICATION_APPLICATION_FOCUS_OUT
     Ref<InputEventMouse> mouse_event = p_event;
     if (mouse_event.is_valid() && p_camera != nullptr) {
-        editor_cursor->update(p_camera, mouse_event->get_position(), nullptr);
+        if (buildup_mode) {
+            editor_cursor->update(
+                    p_camera, mouse_event->get_position(), hex_map, nullptr);
+        } else {
+            editor_cursor->update(
+                    p_camera, mouse_event->get_position(), nullptr);
+        }
     }
 
     // grab the common mouse button up/downs to simplify the conditions in the
@@ -455,6 +465,16 @@ int32_t HexMapNodeEditorPlugin::_forward_3d_gui_input(Camera3D *p_camera,
         auto cell = editor_cursor->get_origin_cell_info();
         ERR_FAIL_COND_V(cell.value == HexMapNode::CELL_VALUE_NONE,
                 AFTER_GUI_INPUT_STOP);
+
+        Array last_cell_update = Array::make();
+        if (!cells_changed.is_empty() &&
+                ((--cells_changed.end())->cell_id != cell_id ||
+                        mouse_left_released)) {
+            auto last_cell_change = (--cells_changed.end());
+            last_cell_update.append((Vector3i)last_cell_change->cell_id);
+            last_cell_update.append(last_cell_change->new_tile);
+            last_cell_update.append(last_cell_change->new_orientation);
+        }
         if (cell.value != tile || cell.orientation != orientation) {
             cells_changed.push_back(CellChange{
                     .cell_id = cell_id,
@@ -463,11 +483,12 @@ int32_t HexMapNodeEditorPlugin::_forward_3d_gui_input(Camera3D *p_camera,
                     .new_tile = cell.value,
                     .new_orientation = cell.orientation,
             });
+        }
+        if (!last_cell_update.is_empty()) {
             static_assert(HexMapNode::CELL_ARRAY_INDEX_VEC == 0);
             static_assert(HexMapNode::CELL_ARRAY_INDEX_VALUE == 1);
             static_assert(HexMapNode::CELL_ARRAY_INDEX_ORIENTATION == 2);
-            hex_map->set_cells(Array::make(
-                    (Vector3i)cell_id, cell.value, cell.orientation));
+            hex_map->set_cells(last_cell_update);
         }
         if (mouse_left_released) {
             commit_cell_changes("HexMap: paint cells");
@@ -1047,6 +1068,9 @@ void HexMapNodeEditorPlugin::_bind_methods() {
     ClassDB::bind_method(D_METHOD("cursor_set_orientation", "orientation"),
             static_cast<void (HexMapNodeEditorPlugin::*)(int)>(
                     &HexMapNodeEditorPlugin::cursor_set_orientation));
+
+    ClassDB::bind_method(D_METHOD("set_buildup_brush", "toggled"),
+            &HexMapNodeEditorPlugin::set_buildup_brush);
 }
 
 void HexMapNodeEditorPlugin::add_editor_shortcut(const String &path,
@@ -1090,6 +1114,8 @@ void HexMapNodeEditorPlugin::add_editor_shortcut(const String &path,
 }
 
 HexMapNodeEditorPlugin::HexMapNodeEditorPlugin() {
+    buildup_mode = false;
+
     // initialize the depth array
     edit_axis_depth.resize(4);
     edit_axis_depth.fill(0);

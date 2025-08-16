@@ -1,15 +1,15 @@
 [gd_scene load_steps=11 format=3 uid="uid://c4a26oqnkwm02"]
 
 [ext_resource type="Script" path="res://addons/hex_map/gui/editor_toolbar.gd" id="1_gmjvk"]
-[ext_resource type="Texture2D" uid="uid://dew2xbw2uvpy2" path="res://addons/hex_map/icons/Paint.svg" id="2_r4hmj"]
-[ext_resource type="Texture2D" uid="uid://b6oomxj77xtlg" path="res://addons/hex_map/icons/Eraser.svg" id="3_ysjxo"]
-[ext_resource type="Texture2D" uid="uid://db3esx21o6mn1" path="res://addons/hex_map/icons/ToolSelect.svg" id="4_qfheu"]
-[ext_resource type="Texture2D" uid="uid://mx45khfrx1g6" path="res://addons/hex_map/icons/ToolMove.svg" id="5_qdaf6"]
-[ext_resource type="Texture2D" uid="uid://dxcds4yxeot0t" path="res://addons/hex_map/icons/ActionCopy.svg" id="6_w2eyf"]
-[ext_resource type="Texture2D" uid="uid://d1p1fc1hcb6s8" path="res://addons/hex_map/icons/Bucket.svg" id="7_2qfkp"]
-[ext_resource type="Texture2D" uid="uid://br3s3i4gu05x4" path="res://addons/hex_map/icons/Clear.svg" id="8_eq057"]
-[ext_resource type="Texture2D" uid="uid://hlskhr8entje" path="res://addons/hex_map/icons/RotateLeft.svg" id="9_4knje"]
-[ext_resource type="Texture2D" uid="uid://dwstkvj1mrmt3" path="res://addons/hex_map/icons/RotateRight.svg" id="10_phyr5"]
+[ext_resource type="Texture2D" uid="uid://0rg0r27q65fg" path="res://addons/hex_map/icons/Paint.svg" id="2_r4hmj"]
+[ext_resource type="Texture2D" uid="uid://c5k0gdmttm2xj" path="res://addons/hex_map/icons/Eraser.svg" id="3_ysjxo"]
+[ext_resource type="Texture2D" uid="uid://b88gb8dp46lbo" path="res://addons/hex_map/icons/ToolSelect.svg" id="4_qfheu"]
+[ext_resource type="Texture2D" uid="uid://c3kjcnt0eftuy" path="res://addons/hex_map/icons/ToolMove.svg" id="5_qdaf6"]
+[ext_resource type="Texture2D" uid="uid://w0y34v5qsiwf" path="res://addons/hex_map/icons/ActionCopy.svg" id="6_w2eyf"]
+[ext_resource type="Texture2D" uid="uid://cnjj5ffpbb5xn" path="res://addons/hex_map/icons/Bucket.svg" id="7_2qfkp"]
+[ext_resource type="Texture2D" uid="uid://cd765lq0cm0pq" path="res://addons/hex_map/icons/Clear.svg" id="8_eq057"]
+[ext_resource type="Texture2D" uid="uid://dyvr2flvtq6x8" path="res://addons/hex_map/icons/RotateLeft.svg" id="9_4knje"]
+[ext_resource type="Texture2D" uid="uid://b7goo3fdqca8u" path="res://addons/hex_map/icons/RotateRight.svg" id="10_phyr5"]
 
 [node name="EditPlaneSelector" type="HBoxContainer"]
 script = ExtResource("1_gmjvk")
@@ -107,7 +107,6 @@ layout_mode = 2
 selected = 0
 item_count = 4
 popup/item_0/text = "Y-Plane"
-popup/item_0/id = 0
 popup/item_1/text = "Q-Plane"
 popup/item_1/id = 1
 popup/item_2/text = "R-Plane"
@@ -127,3 +126,11 @@ unique_name_in_owner = true
 layout_mode = 2
 min_value = -32768.0
 max_value = 32767.0
+
+[node name="BuildupBrushButton" type="Button" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Toggle Buildup Brush"
+toggle_mode = true
+icon = ExtResource("2_r4hmj")
+flat = true
