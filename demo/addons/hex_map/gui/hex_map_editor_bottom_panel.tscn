@@ -1,17 +1,17 @@
 [gd_scene load_steps=15 format=3 uid="uid://bbh32kt8md5fb"]
 
-[ext_resource type="Texture2D" uid="uid://vrx8uwcvnqhs" path="res://addons/hex_map/icons/Search.svg" id="1_3u53n"]
+[ext_resource type="Texture2D" uid="uid://pfpbsx4slli1" path="res://addons/hex_map/icons/Search.svg" id="1_3u53n"]
 [ext_resource type="Theme" uid="uid://hmpeb1yvo8yj" path="res://addons/hex_map/hex_map_theme.tres" id="1_pv6dr"]
 [ext_resource type="Script" path="res://addons/hex_map/gui/hex_map_editor_bottom_panel.gd" id="1_qghj3"]
 [ext_resource type="PackedScene" uid="uid://c4a26oqnkwm02" path="res://addons/hex_map/gui/editor_toolbar.tscn" id="2_hi76h"]
-[ext_resource type="Texture2D" uid="uid://dew2xbw2uvpy2" path="res://addons/hex_map/icons/Paint.svg" id="2_q6cql"]
-[ext_resource type="Texture2D" uid="uid://dbrg57lmmg1vq" path="res://addons/hex_map/icons/FileThumbnail.svg" id="2_ysjwf"]
-[ext_resource type="Texture2D" uid="uid://b6oomxj77xtlg" path="res://addons/hex_map/icons/Eraser.svg" id="3_a0fx5"]
-[ext_resource type="Texture2D" uid="uid://db3esx21o6mn1" path="res://addons/hex_map/icons/ToolSelect.svg" id="4_u20k1"]
-[ext_resource type="Texture2D" uid="uid://dxcds4yxeot0t" path="res://addons/hex_map/icons/ActionCopy.svg" id="5_brsxn"]
-[ext_resource type="Texture2D" uid="uid://mx45khfrx1g6" path="res://addons/hex_map/icons/ToolMove.svg" id="6_n0otx"]
-[ext_resource type="Texture2D" uid="uid://hlskhr8entje" path="res://addons/hex_map/icons/RotateLeft.svg" id="7_hxt1m"]
-[ext_resource type="Texture2D" uid="uid://dwstkvj1mrmt3" path="res://addons/hex_map/icons/RotateRight.svg" id="8_qhtoq"]
+[ext_resource type="Texture2D" uid="uid://0rg0r27q65fg" path="res://addons/hex_map/icons/Paint.svg" id="2_q6cql"]
+[ext_resource type="Texture2D" uid="uid://cteffvnrd4kq6" path="res://addons/hex_map/icons/FileThumbnail.svg" id="2_ysjwf"]
+[ext_resource type="Texture2D" uid="uid://c5k0gdmttm2xj" path="res://addons/hex_map/icons/Eraser.svg" id="3_a0fx5"]
+[ext_resource type="Texture2D" uid="uid://b88gb8dp46lbo" path="res://addons/hex_map/icons/ToolSelect.svg" id="4_u20k1"]
+[ext_resource type="Texture2D" uid="uid://w0y34v5qsiwf" path="res://addons/hex_map/icons/ActionCopy.svg" id="5_brsxn"]
+[ext_resource type="Texture2D" uid="uid://c3kjcnt0eftuy" path="res://addons/hex_map/icons/ToolMove.svg" id="6_n0otx"]
+[ext_resource type="Texture2D" uid="uid://dyvr2flvtq6x8" path="res://addons/hex_map/icons/RotateLeft.svg" id="7_hxt1m"]
+[ext_resource type="Texture2D" uid="uid://b7goo3fdqca8u" path="res://addons/hex_map/icons/RotateRight.svg" id="8_qhtoq"]
 [ext_resource type="PackedScene" uid="uid://7do5qk8fxmuy" path="res://addons/hex_map/gui/zoom_widget.tscn" id="12_64prf"]
 [ext_resource type="PackedScene" uid="uid://dut4042ogc1kq" path="res://addons/hex_map/gui/palette.tscn" id="14_pg60a"]
 
@@ -33,76 +33,76 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ToolbarHBox" type="HBoxContainer" parent="VBoxContainer"]
+[node name="ToolbarHFlow" type="HFlowContainer" parent="VBoxContainer"]
 layout_mode = 2
 
-[node name="CommonToolbar" parent="VBoxContainer/ToolbarHBox" instance=ExtResource("2_hi76h")]
+[node name="CommonToolbar" parent="VBoxContainer/ToolbarHFlow" instance=ExtResource("2_hi76h")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/ToolbarHBox"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/ToolbarHFlow"]
 visible = false
 layout_mode = 2
 
-[node name="PaintButton" type="Button" parent="VBoxContainer/ToolbarHBox/HBoxContainer3"]
+[node name="PaintButton" type="Button" parent="VBoxContainer/ToolbarHFlow/HBoxContainer3"]
 unique_name_in_owner = true
 layout_mode = 2
 toggle_mode = true
 icon = ExtResource("2_q6cql")
 flat = true
 
-[node name="EraseButton" type="Button" parent="VBoxContainer/ToolbarHBox/HBoxContainer3"]
+[node name="EraseButton" type="Button" parent="VBoxContainer/ToolbarHFlow/HBoxContainer3"]
 unique_name_in_owner = true
 layout_mode = 2
 toggle_mode = true
 icon = ExtResource("3_a0fx5")
 flat = true
 
-[node name="SelectButton" type="Button" parent="VBoxContainer/ToolbarHBox/HBoxContainer3"]
+[node name="SelectButton" type="Button" parent="VBoxContainer/ToolbarHFlow/HBoxContainer3"]
 unique_name_in_owner = true
 layout_mode = 2
 toggle_mode = true
 icon = ExtResource("4_u20k1")
 flat = true
 
-[node name="VSeparator" type="VSeparator" parent="VBoxContainer/ToolbarHBox/HBoxContainer3"]
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/ToolbarHFlow/HBoxContainer3"]
 layout_mode = 2
 
-[node name="CopyButton" type="Button" parent="VBoxContainer/ToolbarHBox/HBoxContainer3"]
+[node name="CopyButton" type="Button" parent="VBoxContainer/ToolbarHFlow/HBoxContainer3"]
 unique_name_in_owner = true
 layout_mode = 2
 disabled = true
 icon = ExtResource("5_brsxn")
 flat = true
 
-[node name="MoveButton" type="Button" parent="VBoxContainer/ToolbarHBox/HBoxContainer3"]
+[node name="MoveButton" type="Button" parent="VBoxContainer/ToolbarHFlow/HBoxContainer3"]
 unique_name_in_owner = true
 layout_mode = 2
 disabled = true
 icon = ExtResource("6_n0otx")
 flat = true
 
-[node name="VSeparator2" type="VSeparator" parent="VBoxContainer/ToolbarHBox/HBoxContainer3"]
+[node name="VSeparator2" type="VSeparator" parent="VBoxContainer/ToolbarHFlow/HBoxContainer3"]
 layout_mode = 2
 
-[node name="CCWButton" type="Button" parent="VBoxContainer/ToolbarHBox/HBoxContainer3"]
+[node name="CCWButton" type="Button" parent="VBoxContainer/ToolbarHFlow/HBoxContainer3"]
 unique_name_in_owner = true
 layout_mode = 2
 icon = ExtResource("7_hxt1m")
 flat = true
 
-[node name="CWButton" type="Button" parent="VBoxContainer/ToolbarHBox/HBoxContainer3"]
+[node name="CWButton" type="Button" parent="VBoxContainer/ToolbarHFlow/HBoxContainer3"]
 unique_name_in_owner = true
 layout_mode = 2
 icon = ExtResource("8_qhtoq")
 flat = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ToolbarHBox"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ToolbarHFlow"]
 layout_mode = 2
 size_flags_horizontal = 10
 theme_override_constants/separation = 10
 
-[node name="FilterLineEdit" type="LineEdit" parent="VBoxContainer/ToolbarHBox/HBoxContainer"]
+[node name="FilterLineEdit" type="LineEdit" parent="VBoxContainer/ToolbarHFlow/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
@@ -110,7 +110,7 @@ placeholder_text = "Filter Meshes"
 clear_button_enabled = true
 right_icon = ExtResource("1_3u53n")
 
-[node name="ThumbnailButton" type="Button" parent="VBoxContainer/ToolbarHBox/HBoxContainer"]
+[node name="ThumbnailButton" type="Button" parent="VBoxContainer/ToolbarHFlow/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
@@ -118,7 +118,7 @@ toggle_mode = true
 icon = ExtResource("2_ysjwf")
 flat = true
 
-[node name="ZoomWidget" parent="VBoxContainer/ToolbarHBox/HBoxContainer" instance=ExtResource("12_64prf")]
+[node name="ZoomWidget" parent="VBoxContainer/ToolbarHFlow/HBoxContainer" instance=ExtResource("12_64prf")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 1
