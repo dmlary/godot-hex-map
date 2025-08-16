@@ -88,7 +88,7 @@ void EditorCursor::transform_meshes() {
     }
 
     // To prevent the HexMapNode cells from hiding the cursor cells (by having
-    // larger meshes, etc), we need to get a the list of cells the 
+    // larger meshes, etc), we need to get a the list of cells the
     // cursor now overlaps, and hide those.  Additionally we need to show any
     // cells we no longer overlap.
     //
@@ -213,8 +213,9 @@ bool EditorCursor::update(const Camera3D *camera,
         Vector3 *point) {
     ERR_FAIL_COND_V_MSG(
             camera == nullptr, false, "null camera in EditorCursor.update()");
-    ERR_FAIL_COND_V_MSG(
-            hex_map == nullptr, false, "null hex_map in EditorCursor.update()");
+    ERR_FAIL_COND_V_MSG(hex_map == nullptr,
+            false,
+            "null hex_map in EditorCursor.update()");
 
     Transform3D local_transform =
             parent_space.get_transform().affine_inverse();
@@ -232,17 +233,12 @@ bool EditorCursor::update(const Camera3D *camera,
 
     auto space = hex_map->get_world_3d()->get_direct_space_state();
     auto raycast = space->intersect_ray(PhysicsRayQueryParameters3D::create(
-        camera->project_ray_origin(pointer),
-        pos,
-        1,
-        {}
-    ));
+            camera->project_ray_origin(pointer), pos, 1, {}));
     if (!raycast.is_empty()) {
         auto position = raycast.get("position", 0);
         if (position.get_type() == Variant::Type::VECTOR3) {
             pos = position;
         }
-
     }
     if (point != nullptr) {
         *point = pos;
@@ -250,20 +246,18 @@ bool EditorCursor::update(const Camera3D *camera,
     pointer_pos = pos;
 
     HexMapCellId cell = parent_space.get_cell_id(pos);
-    if (hex_map->get_cell(cell).value != HexMapNode::CELL_VALUE_NONE){
+    if (hex_map->get_cell(cell).value != HexMapNode::CELL_VALUE_NONE) {
         // currently if cell is occupied we will just query along the
         // work axis until its unoccupied, but another valid choice is to
         // step towards nearest cell in direction of camera
 
-        // naively step "upwards" along work axis, does not account for if 
+        // naively step "upwards" along work axis, does not account for if
         // camera is below work plane
         cell = cell + HexMapCellId(edit_plane.normal);
     }
-    if (hex_map->get_cell(cell).value != HexMapNode::CELL_VALUE_NONE)
-    {
+    if (hex_map->get_cell(cell).value != HexMapNode::CELL_VALUE_NONE) {
         return false;
     }
-    
 
     if (cell == pointer_cell) {
         return false;
