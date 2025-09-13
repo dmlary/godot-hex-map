@@ -135,7 +135,7 @@ Vector<HexMapCellId> SelectionManager::get_cell_ids() const {
 Array SelectionManager::get_cell_vecs() const {
     Array out;
     for (const auto &cell : mesh_manager.get_cells()) {
-        out.push_back((CellId)cell.key);
+        out.push_back(((CellId)cell.key).to_vec());
     }
     return out;
 }

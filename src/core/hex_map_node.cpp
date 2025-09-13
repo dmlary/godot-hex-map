@@ -233,7 +233,7 @@ Array HexMapNode::get_cell_ids_in_local_quad(Vector3 a,
     Array out;
     out.resize(count);
     for (int i = 0; i < count; i++) {
-        out[i] = Ref<hex_bind::HexMapCellId>(cell_ids[i]);
+        out[i] = cell_ids[i].to_ref();
     }
     return out;
 }
