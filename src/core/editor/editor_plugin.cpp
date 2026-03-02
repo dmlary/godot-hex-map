@@ -270,7 +270,7 @@ void HexMapNodeEditorPlugin::selection_move() {
     size_t index = 0;
     for (const HexMapCellId &cell_id : selection_manager->get_cell_ids()) {
         size_t base = index * HexMapNode::CELL_ARRAY_WIDTH;
-        cells[base] = cell_id;
+        cells[base] = cell_id.to_vec();
         cells[base + HexMapNode::CELL_ARRAY_INDEX_VALUE] =
                 HexMapNode::CELL_VALUE_NONE;
         index++;
@@ -493,7 +493,7 @@ int32_t HexMapNodeEditorPlugin::_forward_3d_gui_input(Camera3D *p_camera,
             static_assert(HexMapNode::CELL_ARRAY_INDEX_VEC == 0);
             static_assert(HexMapNode::CELL_ARRAY_INDEX_VALUE == 1);
             static_assert(HexMapNode::CELL_ARRAY_INDEX_ORIENTATION == 2);
-            hex_map->set_cells(Array::make(cell_id, -1, 0));
+            hex_map->set_cells(Array::make(cell_id.to_vec(), -1, 0));
         }
         if (mouse_right_released) {
             commit_cell_changes("HexMap: erase cells");

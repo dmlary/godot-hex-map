@@ -72,7 +72,6 @@ public:
     // vector3i is the fastest way to get to a Variant type that isn't malloc
     // heavy (like Ref<HexMapCellIdRef>)
     inline operator Vector3i() const { return Vector3i(q, y, r); }
-    inline operator Variant() const { return (Vector3i) * this; }
     operator String() const;
 
     /// return a Ref<T> wrapped copy of this HexMapCellId
