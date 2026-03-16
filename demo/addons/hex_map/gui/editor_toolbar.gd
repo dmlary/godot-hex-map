@@ -1,7 +1,7 @@
 @tool
 extends HBoxContainer
 
-@export var editor_plugin : EditorPlugin :
+@export var editor_plugin: EditorPlugin:
     set(value):
         if editor_plugin != null:
             editor_plugin.edit_plane_axis_changed \
@@ -32,7 +32,7 @@ extends HBoxContainer
         _on_editor_plugin_selection_active_changed(
                 editor_plugin.is_selection_active())
 
-@export var axis := -1 :
+@export var axis := -1:
     set(value):
         if value == axis:
             return
@@ -44,7 +44,7 @@ extends HBoxContainer
             await ready
         %AxisDropdown.selected = value
 
-@export var depth: int :
+@export var depth: int:
     set(value):
         if value == depth:
             return
@@ -67,6 +67,7 @@ func _ready() -> void:
     %AxisDropdown.item_selected.connect(func(v): axis = v)
     %DepthSpinBox.value_changed.connect(func(v): depth = v)
     %DepthLabelButton.pressed.connect(func(): depth = 0)
+    %BuildupBrushButton.toggled.connect(_on_buildup_brush_button_toggled)
 
 func _on_edit_plane_axis_changed(value: int) -> void:
     axis = value
@@ -104,3 +105,7 @@ func _on_fill_selection_button_pressed() -> void:
 func _on_clear_selection_button_pressed() -> void:
     if editor_plugin:
         editor_plugin.selection_clear()
+
+func _on_buildup_brush_button_toggled(state: bool) -> void:
+    if editor_plugin:
+        editor_plugin.set_buildup_brush(state)

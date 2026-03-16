@@ -110,6 +110,9 @@ protected:
     void clear_current_selection();
     void set_selection_vecs(Array);
 
+    // toggle buildup brush
+    void set_buildup_brush(bool);
+
     /// node being edited
     HexMapNode *hex_map = nullptr;
 
@@ -145,6 +148,9 @@ protected:
     /// saved edit axis depths so the axis can change but return to the same
     /// depth when switched back
     Array edit_axis_depth;
+
+    /// whether buildup brush mode is enabled
+    bool buildup_mode;
 
 private:
     // Tried using UndoRedo with MERGE_ALL to maintain the list of cells
