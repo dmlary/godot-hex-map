@@ -149,10 +149,12 @@ func _on_cell_types_changed() -> void:
 func _on_mesh_library_changed() -> void:
     %MeshPalette.clear()
     for id in mesh_library.get_item_list():
+        var preview = mesh_library.get_item_preview(id)
+        if not preview:
+            preview = EditorInterface.make_mesh_previews([mesh_library.get_item_mesh(id)], 128)[0]
         %MeshPalette.add_item({
             "id": id,
-            "preview": mesh_library.get_item_preview(id),
-            "mesh": mesh_library.get_item_mesh(id),
+            "preview": preview,
             "desc": mesh_library.get_item_name(id),
         })
 
