@@ -227,6 +227,12 @@ func populate_compact_palette() -> void:
             button.color = Color.TRANSPARENT
             button.selected = id == selected_id
             button.tooltip_text = item.desc
+        elif item.mesh is Mesh:
+			button = PaletteChip.new()
+			button.preview = EditorInterface.make_mesh_previews([item.mesh], 128)[0]
+			button.color = Color.TRANSPARENT
+			button.selected = id == selected_id
+			button.tooltip_text = item.desc
         else:
             push_error("invalid type for item.preview: ", item)
 
@@ -250,6 +256,9 @@ func populate_full_palette() -> void:
         elif item.preview is Texture2D:
             preview = TextureRect.new()
             preview.texture = item.preview
+		elif item.mesh is Mesh:
+			preview = TextureRect.new()
+			preview.texture = EditorInterface.make_mesh_previews([item.mesh], 128)[0]
         else:
             push_error("invalid type for item.preview: ", item)
 

@@ -58,6 +58,7 @@ func _on_node_mesh_library_changed() -> void:
         %MeshPalette.add_item({
             "id": id,
             "preview": mesh_library.get_item_preview(id),
+            "mesh": mesh_library.get_item_mesh(id),
             "desc": mesh_library.get_item_name(id),
         })
 
